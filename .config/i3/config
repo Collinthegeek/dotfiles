@@ -1,0 +1,123 @@
+exec feh --bg-fill $HOME/Pictures/wallpaper.jpg
+set_from_resource $base03   i3wm.color8     #002b36
+set_from_resource $base02   i3wm.color0     #073642
+set_from_resource $base01   i3wm.color10    #586e75
+set_from_resource $base00   i3wm.color11    #657b83
+set_from_resource $base0    i3wm.color12    #839496
+set_from_resource $base1    i3wm.color14    #93a1a1
+set_from_resource $base2    i3wm.color7     #eee8d5
+set_from_resource $base3    i3wm.color15    #fdf6e3
+set_from_resource $yellow   i3wm.color3     #b58900
+set_from_resource $orange   i3wm.color9     #cb4b16
+set_from_resource $red      i3wm.color1     #dc322f
+set_from_resource $magenta  i3wm.color5     #d33682
+set_from_resource $violet   i3wm.color13    #6c71c4
+set_from_resource $blue     i3wm.color4     #268bd2
+set_from_resource $cyan     i3wm.color6     #2aa198
+set_from_resource $green    i3wm.color2     #859900
+set_from_resource $background i3wm.background $base3
+set_from_resource $foreground i3wm.foreground $base00
+set_from_resource $lighterbg  i3wm.lighterbg  $base02
+set_from_resource $separator  i3wm.separator  $lighterbg
+
+new_window 1pixel
+
+set $mod Mod4
+font pango:DejaVu Sans Mono 10
+bindsym $mod+Return exec --no-startup-id gnome-terminal
+bindsym $mod+q kill
+bindsym $mod+d exec rofi -show drun 
+bindsym $mod+s exec google-chrome
+bindsym $mod+Left move left
+bindsym $mod+Down move down
+bindsym $mod+Up move up
+bindsym $mod+Right move right
+
+bindsym $mod+Shift+Right resize shrink width 1 px or 1 ppt
+bindsym $mod+Shift+Up resize grow height 1 px or 1 ppt
+bindsym $mod+Shift+Down resize shrink height 1 px or 1 ppt
+bindsym $mod+Shift+Left resize grow width 1 px or 1 ppt
+
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+bar {
+	status_command i3blocks
+	colors {
+		background	$background
+		statusline	$foreground
+		separator	$background
+
+		#Type               border      background	font
+		focused_workspace	$lighterbg  $lighterbg  $foreground
+		active_workspace	$background $background $foreground
+		inactive_workspace	$background $background $foreground
+		urgent_workspace	$background $background $foreground
+	}
+}
+#class                  border      backgr	text	indicator
+client.focused          #2e3440     #2e3440     #ffffff $background
+
+#2e3440
+gaps inner 15
+gaps outer 1
+smart_gaps on
+
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20
+#bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
+#bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
+#bindsym XF86AudioMute exec amixer -q set Master toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym Print exec maim -s | tee ~/documents/images/screenshots/$(date +%d-%m-%Y_%T.png)
+bindsym Scroll_Lock exec i3lock -t -c 2d2d2d
+
+#exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec nm-applet
+exec dbus-launch compton --config ~/.config/compton.conf &
+exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
+
+
+
+## Volume control
+
+
+set $volumepath ~/git/i3-volume
+set $statuscmd i3blocks
+set $statussig SIGRTMIN+10
+set $volumestep 5
+bindsym XF86AudioRaiseVolume exec $volumepath/volume -np -i $volumestep -y -t $statuscmd -u $statussig
+bindsym XF86AudioLowerVolume exec $volumepath/volume -np -d $volumestep -y -t $statuscmd -u $statussig
+bindsym XF86AudioMute        exec $volumepath/volume -mn -t $statuscmd -y -u $statussig
+

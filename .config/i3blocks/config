@@ -1,0 +1,44 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+command=/usr/lib/i3blocks/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+[iface]
+color=#00FF00
+interval=10
+separator=false
+
+[volume]
+label=VOL
+instance=Master
+interval=once
+signal=10
+
+[battery]
+label=BAT
+interval=30
+
+[time]
+command=date '+%m-%d-%Y %H:%M:%S'
+interval=5
